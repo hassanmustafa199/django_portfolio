@@ -1,285 +1,178 @@
-<!DOCTYPE html>
-<html lang="en" x-data="app()" :class="{'dark':dark}" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ bio.name|default:"My Portfolio" }}</title>
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Hassan Mustafa | Portfolio</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        display: ['PT Sans', 'sans-serif'],
-                        body: ['DM Sans', 'sans-serif']
-                    },
-                    colors: {
-                        accent: '#FF6B2B',
-                        'accent-light': '#FF8F5C'
-                    }
-                }
-            }
-        }
-    </script>
+  <body>
+    <header>
+      <div class="container">
+        <h2 class="logo">
+          {% if bio %} {{ bio.name }} {% else %} My Portfolio {% endif %}
+        </h2>
+        <nav>
+          <ul>
+            <li><a href="#home">Home</a></li>
 
-    <style>
-        *,*::before,*::after{box-sizing:border-box}
-        html,body{font-family:'DM Sans',sans-serif}
-        h1,h2,h3,h4,h5,h6{font-family:'PT Sans',sans-serif}
-        body{transition:background-color .3s,color .3s}
-        ::-webkit-scrollbar{width:5px}
-        ::-webkit-scrollbar-thumb{background:#FF6B2B;border-radius:99px}
-        .reveal{opacity:0;transform:translateY(26px);transition:.6s}
-        .reveal.in{opacity:1;transform:none}
-        .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
-        .nl{position:relative}
-        .nl::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:currentColor;transition:.22s}
-        .nl:hover::after,.nl.on::after{width:100%}
-        .shimmer{position:relative;overflow:hidden}
-        .shimmer::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:rgba(255,255,255,.18);transform:skewX(-20deg);transition:.4s}
-        .shimmer:hover::after{left:160%}
-        .pf{overflow:hidden;background:#d4d4d8}
-        .pf img{width:100%;height:100%;object-fit:cover;display:block}
-        .card-h{transition:transform .28s,border-color .18s}
-        .card-h:hover{transform:translateY(-4px)}
-        [x-cloak]{display:none!important}
-    </style>
-</head>
+            <li><a href="#about">About</a></li>
 
-<body class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased">
+            <li><a href="#education">Education</a></li>
 
-<header class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
-        :class="sc?'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm shadow-black/5':''">
-    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <li><a href="#skills">Skills</a></li>
 
-        <a href="#hero" class="font-display font-bold text-xl">
-            <span>{{ bio.name|default:"Portfolio" }}</span>
-        </a>
+            <li><a href="#experience">Experience</a></li>
 
-        <ul class="hidden md:flex items-center gap-8 text-sm">
-            <li><a href="#hero" class="nl">Home</a></li>
-            <li><a href="#about" class="nl">About</a></li>
-            <li><a href="#education" class="nl">Education</a></li>
-            <li><a href="#skills" class="nl">Skills</a></li>
-            <li><a href="#experience" class="nl">Experience</a></li>
-            <li><a href="#projects" class="nl">Projects</a></li>
-            <li><a href="#contact" class="nl">Contact</a></li>
-        </ul>
+            <li><a href="#projects">Projects</a></li>
 
-        <button @click="dark=!dark" class="w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800">
-            ☾
-        </button>
-    </nav>
-</header>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
-<main>
-
-<section id="hero" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
-    <div class="max-w-6xl mx-auto px-6 py-24 w-full">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-
-            <div>
-                <p class="reveal text-sm font-medium text-accent tracking-widest uppercase mb-4">
-                    Available for work
-                </p>
-
-                <h1 class="reveal d1 font-display font-bold text-5xl md:text-7xl leading-tight mb-6">
-                    Hi, I'm <span class="text-accent">{{ bio.name }}</span>
-                </h1>
-
-                <p class="reveal d2 text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-md mb-10">
-                    {{ bio.job_title }}
-                </p>
-
-                <p class="reveal d2 text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-md mb-10">
-                    {{ bio.description }}
-                </p>
-
-                <div class="reveal d3 flex gap-4">
-                    <a href="#projects" class="shimmer bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-7 py-3.5 rounded-full text-sm">
-                        View Projects
-                    </a>
-                    <a href="#contact" class="border border-zinc-300 dark:border-zinc-700 px-7 py-3.5 rounded-full text-sm">
-                        Contact Me
-                    </a>
-                </div>
-            </div>
-
-            <div class="reveal d2 flex justify-center md:justify-end">
-                <div class="pf w-72 h-72 md:w-96 md:h-96 rounded-3xl">
-                    {% if bio.profile_picture %}
-                        <img src="{{ bio.profile_picture.url }}" alt="{{ bio.name }}">
-                    {% endif %}
-                </div>
-            </div>
-
+    <section id="home" class="hero">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <h1>{% if bio %} Hello, I'm {{ bio.name }} {% endif %}</h1>
+          {% if bio %}
+          <h3>{{ bio.job_title }}</h3>
+          {% endif %} {% if bio %}
+          <p>{{ bio.description }}</p>
+          {% endif %}
         </div>
-    </div>
-</section>
 
-<section id="about" class="py-24 bg-zinc-50 dark:bg-zinc-900/40">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="reveal text-xs text-accent tracking-widest uppercase mb-3">About me</p>
-        <h2 class="reveal d1 font-display font-bold text-4xl mb-6">{{ bio.name }}</h2>
-        <p class="reveal d2 text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-3xl">
-            {{ bio.description }}
-        </p>
-    </div>
-</section>
-
-<section id="education" class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="reveal text-xs text-accent tracking-widest uppercase mb-3">Academic</p>
-        <h2 class="reveal d1 font-display font-bold text-4xl mb-12">Education</h2>
-
-        <div class="grid md:grid-cols-2 gap-6">
-            {% for edu in education %}
-            <div class="reveal card-h bg-zinc-50 dark:bg-zinc-900 rounded-2xl p-7 border border-zinc-100 dark:border-zinc-800">
-                <h3 class="font-display font-bold text-xl mb-2">{{ edu.degree }}</h3>
-                <p class="text-accent text-sm mb-2">{{ edu.institute }}</p>
-                <p class="text-sm text-zinc-400 mb-3">{{ edu.year }}</p>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ edu.description }}</p>
-            </div>
-            {% endfor %}
+        <div class="hero-image">
+          {% if bio.profile_picture %}
+          <img src="{{ bio.profile_picture.url }}" alt="{{ bio.name }}" />
+          {% endif %}
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<section id="skills" class="py-24 bg-zinc-50 dark:bg-zinc-900/40">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="reveal text-xs text-accent tracking-widest uppercase mb-3">My abilities</p>
-        <h2 class="reveal d1 font-display font-bold text-4xl mb-12">Skills</h2>
+    <section id="about">
+      <div class="container">
+        <h2>About Me</h2>
 
-        <div class="flex flex-wrap gap-3">
-            {% for skill in skills %}
-            <span class="reveal bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-4 py-2 rounded-full">
-                {{ skill.name }} - {{ skill.percentage }}%
-            </span>
-            {% endfor %}
+        {% if bio %}
+        <p>{{ bio.description }}</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="container">
+        {% for edu in education %}
+
+        <div class="card">
+          <h3>{{ edu.degree }}</h3>
+
+          <p>{{ edu.institute }}</p>
+
+          <span>{{ edu.start_year }} - {{ edu.end_year }}</span>
+
+          <p>{{ edu.description }}</p>
         </div>
-    </div>
-</section>
 
-<section id="experience" class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="reveal text-xs text-accent tracking-widest uppercase mb-3">Work</p>
-        <h2 class="reveal d1 font-display font-bold text-4xl mb-12">Experience</h2>
+        {% empty %}
 
-        <div class="grid md:grid-cols-2 gap-6">
-            {% for exp in experiences %}
-            <div class="reveal card-h bg-zinc-50 dark:bg-zinc-900 rounded-2xl p-7 border border-zinc-100 dark:border-zinc-800">
-                <h3 class="font-display font-bold text-xl mb-2">{{ exp.title }}</h3>
-                <p class="text-accent text-sm mb-2">{{ exp.company }}</p>
-                <p class="text-sm text-zinc-400 mb-3">{{ exp.duration }}</p>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ exp.description }}</p>
-            </div>
-            {% endfor %}
+        <p>No education found.</p>
+
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2>Skills</h2>
+
+        <div class="skills">
+          {% for skill in skills %}
+
+          <div class="skill">{{ skill.name }}</div>
+
+          {% empty %}
+
+          <p>No skills found.</p>
+
+          {% endfor %}
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<section id="projects" class="py-24 bg-zinc-50 dark:bg-zinc-900/40">
-    <div class="max-w-6xl mx-auto px-6">
-        <p class="reveal text-xs text-accent tracking-widest uppercase mb-3">Portfolio</p>
-        <h2 class="reveal d1 font-display font-bold text-4xl mb-12">Projects</h2>
+    <section id="experience">
+      <div class="container">
+        {% for exp in experience %}
 
-        <div class="grid md:grid-cols-2 gap-6">
-            {% for project in projects %}
-            <article class="reveal card-h rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-                {% if project.image %}
-                <div class="pf w-full h-56">
-                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
-                </div>
-                {% endif %}
+        <div class="card">
+          <h3>{{ exp.title }}</h3>
 
-                <div class="p-7">
-                    <span class="text-xs bg-orange-50 dark:bg-zinc-800 text-accent border border-orange-200 dark:border-zinc-700 px-3 py-1 rounded-full">
-                        {{ project.category }}
-                    </span>
+          <p>{{ exp.organization }}</p>
 
-                    <h3 class="font-display font-bold text-2xl mt-4 mb-3">{{ project.title }}</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5">{{ project.description }}</p>
+          <span>{{ exp.start_date }} - {{ exp.end_date }}</span>
 
-                    {% if project.link %}
-                    <a href="{{ project.link }}" target="_blank" class="text-sm font-medium text-accent">
-                        View Project →
-                    </a>
-                    {% endif %}
-                </div>
-            </article>
-            {% endfor %}
+          <p>{{ exp.description }}</p>
         </div>
-    </div>
-</section>
 
-<section id="contact" class="py-24">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="bg-zinc-900 dark:bg-zinc-800 rounded-3xl p-10 md:p-16">
-            <h2 class="reveal font-display font-bold text-4xl text-white mb-5">Contact Me</h2>
+        {% empty %}
 
-            <div class="text-zinc-400 space-y-3">
-                <p>Email: {{ bio.email }}</p>
+        <p>No experience found.</p>
 
-                {% if bio.linkedin %}
-                <p>
-                    LinkedIn:
-                    <a href="{{ bio.linkedin }}" target="_blank" class="text-accent">{{ bio.linkedin }}</a>
-                </p>
-                {% endif %}
+        {% endfor %}
+      </div>
+    </section>
 
-                {% if bio.github %}
-                <p>
-                    GitHub:
-                    <a href="{{ bio.github }}" target="_blank" class="text-accent">{{ bio.github }}</a>
-                </p>
-                {% endif %}
-            </div>
+    <section id="projects">
+      <div class="container">
+        <h2>Projects</h2>
+
+        <div class="project-grid">
+          {% for project in projects %}
+
+          <div class="project">
+            {% if project.image %}
+            <img src="{{ project.image.url }}" width="100%" />
+            {% endif %}
+
+            <h3>{{ project.title }}</h3>
+
+            <p>{{ project.description }}</p>
+
+            <p><strong>Technology:</strong> {{ project.technology_used }}</p>
+
+            {% if project.github_link %}
+            <a href="{{ project.github_link }}" target="_blank"> GitHub </a>
+            {% endif %}
+          </div>
+
+          {% empty %}
+
+          <p>No projects found.</p>
+
+          {% endfor %}
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-</main>
+    <section id="contact">
+      <div class="container">
+        <h2>Contact</h2>
 
-<footer class="border-t border-zinc-100 dark:border-zinc-900">
-    <div class="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-zinc-400">
-        © <span id="yr"></span> {{ bio.name }}. All rights reserved.
-    </div>
-</footer>
+        <p>Email : hassansipra567@gmail.com</p>
 
-<script>
-function app() {
-    return {
-        dark: false,
-        sc: false,
-        init() {
-            this.dark = localStorage.getItem('theme') === 'dark';
-            this.$watch('dark', v => localStorage.setItem('theme', v ? 'dark' : 'light'));
+        <p>Phone : +92 345 6950199</p>
 
-            window.addEventListener('scroll', () => {
-                this.sc = window.scrollY > 20;
-            });
+        <p>Location : Lahore, Pakistan</p>
+      </div>
+    </section>
 
-            const io = new IntersectionObserver(entries => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('in');
-                        io.unobserve(e.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-            document.getElementById('yr').textContent = new Date().getFullYear();
-        }
-    }
-}
-</script>
-
-</body>
+    <footer>
+      <p>© 2026 M Hassan Mustafa | All Rights Reserved</p>
+    </footer>
+  </body>
 </html>
